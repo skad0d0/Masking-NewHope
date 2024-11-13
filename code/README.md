@@ -1,4 +1,5 @@
 # NewHope
+This is the README file directly copy from [newhope](https://github.com/newhopecrypto/newhope), we removed the avx2 implementation.
 
 Implementations of the NewHope key-encapsulation mechanism specified in the submission to the 
 [NIST Post-Quantum Cryptography Standardization Project](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/).
@@ -8,7 +9,7 @@ To obtain and build the code, run the following sequence of commands:
 ```
  git clone https://github.com/newhopecrypto/newhope.git
  cd newhope/ref && make
- cd ../avx2 && make
+
 ```
  This will build the binaries
 * `ref/PQCgenKAT_cpakem512`,
@@ -23,18 +24,7 @@ To obtain and build the code, run the following sequence of commands:
 * `ref/speed_cpakem1024`,
 * `ref/speed_ccakem512`,
 * `ref/speed_ccakem1024`,
-* `avx2/PQCgenKAT_cpakem512`,
-* `avx2/PQCgenKAT_cpakem1024`,
-* `avx2/PQCgenKAT_ccakem512`,
-* `avx2/PQCgenKAT_ccakem1024`,
-* `avx2/test_cpakem512`,
-* `avx2/test_cpakem1024`,
-* `avx2/test_ccakem512`,
-* `avx2/test_ccakem1024`,
-* `avx2/speed_cpakem512`,
-* `avx2/speed_cpakem1024`,
-* `avx2/speed_ccakem512`, and
-* `avx2/speed_ccakem1024`.
+
 
 The `PQCgenKAT` binaries produce test-vector files
 as specified in the NIST submission requirements.
