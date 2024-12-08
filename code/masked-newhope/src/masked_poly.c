@@ -3,6 +3,8 @@
 #include "poly.h"
 #include "ntt.h"
 #include "reduce.h"
+#include "fips202.h"
+#include "gadgets.h"
 
 // convert bytes to masked poly
 void poly_masked_frombytes(masked_poly *masked_r, const unsigned char *a)
@@ -89,7 +91,6 @@ void poly_halfmasked_mul_pointwise(masked_poly *masked_r, const poly *a, const m
     for (m = 0; m < (NEWHOPE_MASKING_ORDER + 1); m++)
     {
         r = &((masked_r->poly_shares)[m]);
-        // a = &((masked_a->poly_shares)[m]);
         b = &((masked_b->poly_shares)[m]);
         for (i = 0; i < NEWHOPE_N; i++)
         {
@@ -123,4 +124,40 @@ void poly_masked_invntt(masked_poly *masked_r)
         ntt((uint16_t *)r->coeffs, omegas_inv_bitrev_montgomery);
         mul_coefficients(r->coeffs, gammas_inv_montgomery);
     }
+}
+
+void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce)
+{
+#if NEWHOPE_K != 8
+#error "poly_sample in poly.c only supports k=8"
+#endif
+    unsigned char buf[128], a, b;
+    int i, j, m;
+    poly *r;
+    unsigned char extseed[(NEWHOPE_SYMBYTES+2) * (NEWHOPE_MASKING_ORDER+1)];
+
+    for (m = 0; m < (NEWHOPE_MASKING_ORDER+1); m++)
+    {
+        for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+            extseed[m*34 + i] = masked_seed[m*34 + i];
+        extseed[m*34 + 32] = nonce;
+        r = &((masked_r->poly_shares)[m]);
+        for (i = 0; i < NEWHOPE_N/64; i++)
+        {
+            extseed[m*34 + 33] = i;
+            shake256_masked(buf, 128, &extseed[m*34], 34);
+            for (j = 0; j < 64; j++)
+            {
+                a = buf[2*j];
+                b = buf[2*j+1];
+                r->coeffs[64*i+j] = hw(a) + NEWHOPE_Q - hw(b);
+            }
+        } 
+    }
+}
+
+// msg is a boolean mask of message
+void poly_masked_frommsg(masked_poly *masked_r, const unsigned char *msg)
+{
+    encode_message(msg, masked_r);
 }

@@ -18,6 +18,8 @@ typedef struct
   poly poly_shares[NEWHOPE_MASKING_ORDER + 1];
 } masked_poly;
 
+unsigned char hw(unsigned char a);
+
 // unmasked polynomial operation
 void poly_uniform(poly *a, const unsigned char *seed);
 void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce);
@@ -50,5 +52,5 @@ void poly_halfmasked_mul_pointwise(masked_poly *masked_r, const poly *a, const m
 void poly_masked_add(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b);
 void poly_masked_sub(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b);
 
-
+void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce);
 #endif

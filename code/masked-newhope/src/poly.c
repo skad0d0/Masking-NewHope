@@ -259,7 +259,7 @@ void poly_uniform(poly *a, const unsigned char *seed)
 *
 * Arguments:   - unsigned char a: input byte
 **************************************************/
-static unsigned char hw(unsigned char a)
+unsigned char hw(unsigned char a)
 {
   unsigned char i, r = 0;
   for(i=0;i<8;i++)
@@ -292,6 +292,7 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce)
   for(i=0;i<NEWHOPE_SYMBYTES;i++)
     extseed[i] = seed[i];
   extseed[NEWHOPE_SYMBYTES] = nonce;
+
 
   for(i=0;i<NEWHOPE_N/64;i++) /* Generate noise in blocks of 64 coefficients */
   {
