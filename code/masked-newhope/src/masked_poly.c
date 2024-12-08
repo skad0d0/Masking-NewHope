@@ -65,6 +65,26 @@ void poly_masked_sub(masked_poly *masked_r, const masked_poly *masked_a, const m
     }
 }
 
+void poly_halfmasked_sub(masked_poly *masked_r, const poly *a, const masked_poly *masked_b)
+{
+    unsigned int i, m;
+    poly *r;
+    const poly *b;
+
+    r = &((masked_r->poly_shares)[0]); 
+    b = &((masked_b->poly_shares)[0]);
+    for (i = 0; i < NEWHOPE_N; i++)
+        r->coeffs[i] = (a->coeffs[i] + 3 * NEWHOPE_Q - b->coeffs[i]) % NEWHOPE_Q;
+
+    for (m = 1; m < (NEWHOPE_MASKING_ORDER + 1); m++)
+    {
+        r = &((masked_r->poly_shares)[m]); 
+        b = &((masked_b->poly_shares)[m]);
+        for (i = 0; i < NEWHOPE_N; i++)
+            r->coeffs[i] = (3 * NEWHOPE_Q - b->coeffs[i]) % NEWHOPE_Q;
+    }
+}
+
 void poly_masked_mul_pointwise(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b)
 {
     int i,m;
@@ -160,4 +180,15 @@ void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed,
 void poly_masked_frommsg(masked_poly *masked_r, const unsigned char *msg)
 {
     encode_message(msg, masked_r);
+}
+
+void unmask_poly(masked_poly* mp, poly* p){
+  int16_t temp;
+  for(int i=0; i < NEWHOPE_N; ++i){
+    temp = 0;
+    for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j){
+      temp = (temp + (mp->poly_shares[j].coeffs[i]))%NEWHOPE_Q;
+    }
+    p->coeffs[i]=temp;
+  }
 }

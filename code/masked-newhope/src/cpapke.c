@@ -196,3 +196,38 @@ void cpapke_dec(unsigned char *m,
 
   poly_tomsg(m, &tmp); // masking
 }
+
+void cpapke_masked_enc(unsigned char *masked_c,
+               const unsigned char *masked_m,
+               const unsigned char *pk,
+               const unsigned char *masked_coins)
+{
+  poly bhat, ahat, uhat, vprime;
+  masked_poly masked_v, masked_sprime, masked_eprime, masked_eprimeprime, masked_uhat, masked_vprime;
+  unsigned char publicseed[NEWHOPE_SYMBYTES];
+
+  poly_masked_frommsg(&masked_v, masked_m);
+  decode_pk(&bhat, publicseed, pk);
+  gen_a(&ahat, publicseed);
+
+  poly_masked_sample(&masked_sprime, masked_coins, 0);
+  poly_masked_sample(&masked_eprime, masked_coins, 1);
+  poly_masked_sample(&masked_eprimeprime, masked_coins, 2);
+
+  poly_masked_ntt(&masked_sprime);
+  poly_masked_ntt(&masked_eprime);
+
+  poly_halfmasked_mul_pointwise(&masked_uhat, &ahat, &masked_sprime);
+  poly_masked_add(&masked_uhat, &masked_uhat, &masked_eprime);
+
+  poly_halfmasked_mul_pointwise(&masked_vprime, &bhat, &masked_sprime);
+  poly_masked_invntt(&masked_vprime);
+
+  poly_masked_add(&masked_vprime, &masked_vprime, &masked_eprimeprime);
+  poly_masked_add(&masked_vprime, &masked_vprime, &masked_v);
+
+  unmask_poly(&masked_uhat, &uhat);
+  unmask_poly(&masked_vprime, &vprime);
+
+  encode_c(masked_c, &uhat, &vprime);
+}

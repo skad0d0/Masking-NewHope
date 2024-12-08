@@ -17,6 +17,10 @@ void linear_arithmetic_refresh(Masked* x, unsigned q);
 
 void convert_B2A(Masked *x, Masked *y);
 
+void convert_2_l_to_1bit_bool(Masked* x, Masked* b, unsigned l);
+
 // unsigned char m[(32)*(NEWHOPE_MASKING_ORDER+1)]
 void encode_message(const unsigned char *m, masked_poly* y);
+void modulus_switch(Masked* x, unsigned q, unsigned shift);
+void newhope_decryption(Masked* x, Masked* b);
 #endif
