@@ -2,15 +2,18 @@ CC = /usr/bin/gcc
 CFLAGS = -w -Wall -Wextra -g -O3 -fomit-frame-pointer -march=native
 NISTFLAGS = -O3 -fomit-frame-pointer -march=native -fPIC -no-pie
 
-HEADERS = params.h poly.h randombytes.h ntt.h reduce.h verify.h cpapke.h gadgets.h
-SOURCES = poly.c reduce.c fips202.c verify.c cpapke.c ntt.c precomp.c masked_poly.c random.c gadgets.c newhope_gadgets.c
+HEADERS = params.h poly.h randombytes.h ntt.h reduce.h verify.h cpapke.h gadgets.h utils.h
+SOURCES = poly.c reduce.c fips202.c verify.c cpapke.c ntt.c precomp.c masked_poly.c random.c gadgets.c newhope_gadgets.c utils.c
 # SOURCES_GADGETS = gadget.c newhope_gadget.c
 # HEADERS_GADGETS = gadget.h
 CCAKEM  = ccakem.c
 # CPAKEM  = cpakem.c
 
-all:	test_ccakem512 \
-			speed_ccakem512 \
+# all:	test_ccakem512 \
+# 			speed_ccakem512 \
+# 				test_main \
+
+all : test_main \
 			
 
 test_ccakem512: $(HEADERS) $(SOURCES) $(CCAKEM) test_newhope.c randombytes.c
@@ -21,6 +24,8 @@ speed_ccakem512: $(HEADERS) $(SOURCES) $(CCAKEM) speed.c randombytes.c cpucycles
 	ln -sf ccakem.h api.h
 	$(CC) $(CFLAGS) $(SOURCES) -DNEWHOPE_N=512 $(CCAKEM) randombytes.c cpucycles.c speed.c -o $@
 
+test_main: $(HEADERS) $(SOURCES) main.c randombytes.c
+	$(CC) $(CFLAGS) $(SOURCES) -DNEWHOPE_N=512  randombytes.c main.c -o main_test
 
 .PHONY: clean
 

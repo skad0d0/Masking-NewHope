@@ -17,7 +17,7 @@ void encode_message(const unsigned char *m, masked_poly* y)
             for(int k=0; k < NEWHOPE_MASKING_ORDER+1; ++k)
             {
                 (y->poly_shares[k]).coeffs[i*8+j+0] = (t2.shares[k]*(NEWHOPE_Q/2)) % NEWHOPE_Q;
-                (y->poly_shares[k]).coeffs[i*8+j+512] = (t2.shares[k]*(NEWHOPE_Q/2)) % NEWHOPE_Q;
+                (y->poly_shares[k]).coeffs[i*8+j+256] = (t2.shares[k]*(NEWHOPE_Q/2)) % NEWHOPE_Q;
             }
         }
     }
@@ -39,11 +39,11 @@ void modulus_switch(Masked* x, unsigned q, unsigned shift)
 }
 
 
-unsigned switch_table[9] =  {6, 7, 7, 7, 8, 8, 8, 8, 8}; // Value of \ell in the paper
+// unsigned switch_table[9] =  {6, 7, 7, 7, 8, 8, 8, 8, 8}; // Value of \ell in the paper
 
 void newhope_decryption(Masked* x, Masked* b)
 {
-  unsigned l = switch_table[NEWHOPE_MASKING_ORDER-1];
-  modulus_switch(x, NEWHOPE_Q, l);
-  convert_2_l_to_1bit_bool(x, b, l);
+  // unsigned l = switch_table[NEWHOPE_MASKING_ORDER-1];
+  modulus_switch(x, NEWHOPE_Q, 7);
+  convert_2_l_to_1bit_bool(x, b);
 }

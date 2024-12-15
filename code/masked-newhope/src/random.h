@@ -9,6 +9,7 @@
 #define RNG_MODE 1
 #endif
 
+uint8_t rand8();
 uint16_t rand16(void);
 uint32_t rand32(void);
 uint64_t rand64(void);

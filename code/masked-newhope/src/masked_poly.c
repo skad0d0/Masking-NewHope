@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "params.h"
 #include "poly.h"
+#include "utils.h"
 #include "ntt.h"
 #include "reduce.h"
 #include "fips202.h"
@@ -170,7 +171,7 @@ void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed,
             {
                 a = buf[2*j];
                 b = buf[2*j+1];
-                r->coeffs[64*i+j] = hw(a) + NEWHOPE_Q - hw(b);
+                r->coeffs[64*i+j] = hw(a) + NEWHOPE_Q - hw(b); // to be fixed sum of binomial
             }
         } 
     }
@@ -182,6 +183,73 @@ void poly_masked_frommsg(masked_poly *masked_r, const unsigned char *msg)
     encode_message(msg, masked_r);
 }
 
+
+/*
+void poly_masked_tomsg(unsigned char *msg, masked_poly *masked_r)
+{
+    Masked ar1, ar2, bo1, bo2;
+    int i, j, k;
+    for (i = 0; i < 32*(NEWHOPE_MASKING_ORDER + 1); i++) msg[i] = 0;
+    for (i = 0; i < 256; i++)
+    {
+        for (k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
+        {
+            ar1.shares[k] = (masked_r->poly_shares[k]).coeffs[i];
+            ar2.shares[k] = (masked_r->poly_shares[k]).coeffs[i + 256];
+            // printf("ar1.shares: %x\n", ar1.shares[k]);
+            // printf("ar2.shares: %x\n", ar2.shares[k]);
+            // printf("------------------------------\n");
+        }
+        newhope_decryption(&ar1, &bo1);
+        newhope_decryption(&ar2, &bo2);
+        for (k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
+        {
+            // printf("bo1.shares: %x\n", bo1.shares[k]&1);
+            // printf("bo2.shares: %x\n", bo2.shares[k]&1);
+            // printf("------------------------------\n");
+            msg[(i>>3) + 32*k] |= (bo2.shares[k]&1) << (i&7);
+        }
+
+    }
+
+}
+*/
+
+void poly_masked_tomsg(unsigned char *msg, masked_poly *masked_r)
+{
+    Masked ar1, ar2, bo1, bo2;
+    unsigned char rec_m[32];
+    int i, j, k, t1, t2;
+
+    for (i = 0; i < 32; i++) rec_m[i] = 0;
+
+    for (i = 0; i < 256; i++)
+    {
+        for (k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
+        {
+            ar1.shares[k] = (masked_r->poly_shares[k]).coeffs[i];
+            ar2.shares[k] = (masked_r->poly_shares[k]).coeffs[i + 256];
+        }
+        
+        newhope_decryption(&ar1, &bo1);
+        newhope_decryption(&ar2, &bo2);
+        t1 = bo1.shares[0]&1;
+        t2 = bo2.shares[0]&1;
+
+        for (k = 1; k < NEWHOPE_MASKING_ORDER + 1; k++)
+        {
+            t1 ^= bo1.shares[k]&1;
+            t2 ^= bo2.shares[k]&1;
+        }
+        t1 &= t2;
+        rec_m[(i>>3)] |= (t1) << (i&7);
+        random_boolean_mask(msg, &rec_m);
+    }
+
+}
+
+
+
 void unmask_poly(masked_poly* mp, poly* p){
   int16_t temp;
   for(int i=0; i < NEWHOPE_N; ++i){
@@ -192,3 +260,4 @@ void unmask_poly(masked_poly* mp, poly* p){
     p->coeffs[i]=temp;
   }
 }
+

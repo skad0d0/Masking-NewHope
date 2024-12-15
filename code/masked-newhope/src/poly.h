@@ -19,7 +19,8 @@ typedef struct
 } masked_poly;
 
 unsigned char hw(unsigned char a);
-
+uint16_t coeff_freeze(uint16_t x);
+uint16_t flipabs(uint16_t x);
 // unmasked polynomial operation
 void poly_uniform(poly *a, const unsigned char *seed);
 void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce);

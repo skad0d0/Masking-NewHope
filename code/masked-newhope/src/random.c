@@ -5,7 +5,8 @@
 static unsigned x=123456789, y=362436069, z=521288629;
 #endif
 
-uint32_t rand32(){
+uint32_t rand32()
+{
 
 #ifdef COUNT
   count_rand++;
@@ -30,8 +31,25 @@ uint32_t rand32(){
 #endif
 }
 
+uint8_t rand8()
+{
+  return (uint8_t)rand32()&(0xFF);
+}
+
+uint16_t rand16()
+{
+  return (uint16_t)rand32()&(0xFFFF);
+}
+
+uint64_t rand64()
+{
+  return ((uint64_t)rand32() << 32) + (uint64_t)rand32();
+}
+
+
 // v[0] = r mod q, v[1] = floor(r/q)
-void rand_q(uint16_t v[2]){
+void rand_q(uint16_t v[2])
+{
   uint32_t r;
   do{
     r = rand32();

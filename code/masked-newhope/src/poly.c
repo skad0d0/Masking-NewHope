@@ -12,7 +12,7 @@
 *              
 * Returns integer in {0,...,q-1} congruent to x modulo q
 **************************************************/
-static uint16_t coeff_freeze(uint16_t x)
+uint16_t coeff_freeze(uint16_t x)
 {
   uint16_t m,r;
   int16_t c;
@@ -35,7 +35,7 @@ static uint16_t coeff_freeze(uint16_t x)
 *              
 * Returns |(x mod q) - Q/2|
 **************************************************/
-static uint16_t flipabs(uint16_t x)
+uint16_t flipabs(uint16_t x)
 {
   int16_t r,m;
   r = coeff_freeze(x);
