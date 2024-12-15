@@ -231,3 +231,20 @@ void cpapke_masked_enc(unsigned char *masked_c,
 
   encode_c(masked_c, &uhat, &vprime);
 }
+
+void cpapke_masked_dec(unsigned char *masked_m,
+               const unsigned char *masked_c,
+               const unsigned char *sk)
+{
+  masked_poly masked_shat, masked_tmp;
+  poly uhat, vprime;
+  
+  poly_masked_frombytes(&masked_shat, sk);
+  decode_c(&uhat, &vprime, masked_c);
+  
+  poly_halfmasked_mul_pointwise(&masked_tmp, &uhat, &masked_shat);
+  poly_masked_invntt(&masked_tmp);
+  poly_halfmasked_sub(&masked_tmp, &masked_tmp, &vprime);
+  poly_masked_tomsg(masked_m, &masked_tmp);
+  
+}

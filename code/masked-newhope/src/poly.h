@@ -52,7 +52,7 @@ void poly_masked_mul_pointwise(masked_poly *masked_r, const masked_poly *masked_
 void poly_halfmasked_mul_pointwise(masked_poly *masked_r, const poly *a, const masked_poly *masked_b);
 void poly_masked_add(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b);
 void poly_masked_sub(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b);
-void poly_halfmasked_sub(masked_poly *masked_r, const poly *a, const masked_poly *masked_b);
+void poly_halfmasked_sub(masked_poly *masked_r, const masked_poly *masked_a, const poly *b);
 
 void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce);
 

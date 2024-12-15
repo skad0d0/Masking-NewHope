@@ -66,23 +66,24 @@ void poly_masked_sub(masked_poly *masked_r, const masked_poly *masked_a, const m
     }
 }
 
-void poly_halfmasked_sub(masked_poly *masked_r, const poly *a, const masked_poly *masked_b)
+// r = a - b
+void poly_halfmasked_sub(masked_poly *masked_r, const masked_poly *masked_a, const poly *b)
 {
     unsigned int i, m;
     poly *r;
-    const poly *b;
+    const poly *a;
 
     r = &((masked_r->poly_shares)[0]); 
-    b = &((masked_b->poly_shares)[0]);
+    a = &((masked_a->poly_shares)[0]);
     for (i = 0; i < NEWHOPE_N; i++)
         r->coeffs[i] = (a->coeffs[i] + 3 * NEWHOPE_Q - b->coeffs[i]) % NEWHOPE_Q;
 
     for (m = 1; m < (NEWHOPE_MASKING_ORDER + 1); m++)
     {
         r = &((masked_r->poly_shares)[m]); 
-        b = &((masked_b->poly_shares)[m]);
+        a = &((masked_a->poly_shares)[m]);
         for (i = 0; i < NEWHOPE_N; i++)
-            r->coeffs[i] = (3 * NEWHOPE_Q - b->coeffs[i]) % NEWHOPE_Q;
+            r->coeffs[i] = (a->coeffs[i] + 3 * NEWHOPE_Q) % NEWHOPE_Q;
     }
 }
 
@@ -230,7 +231,7 @@ void poly_masked_tomsg(unsigned char *msg, masked_poly *masked_r)
             ar1.shares[k] = (masked_r->poly_shares[k]).coeffs[i];
             ar2.shares[k] = (masked_r->poly_shares[k]).coeffs[i + 256];
         }
-        
+
         newhope_decryption(&ar1, &bo1);
         newhope_decryption(&ar2, &bo2);
         t1 = bo1.shares[0]&1;
