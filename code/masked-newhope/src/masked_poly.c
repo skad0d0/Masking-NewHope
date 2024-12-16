@@ -150,33 +150,64 @@ void poly_masked_invntt(masked_poly *masked_r)
 
 void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce)
 {
-#if NEWHOPE_K != 8
-#error "poly_sample in poly.c only supports k=8"
-#endif
-    unsigned char buf[128], a, b;
-    int i, j, m;
-    poly *r;
-    unsigned char extseed[(NEWHOPE_SYMBYTES+2) * (NEWHOPE_MASKING_ORDER+1)];
+    unsigned char buf[128 * (NEWHOPE_MASKING_ORDER + 1)], a, b;
+    int i, j, k;
+    Masked a1, a2, a3, a4, b1, b2, b3, b4, y1, y2, y3, y4;
+    unsigned char masked_extseed[(NEWHOPE_SYMBYTES+2) * (NEWHOPE_MASKING_ORDER+1)];
+    uint64_t t;
 
-    for (m = 0; m < (NEWHOPE_MASKING_ORDER+1); m++)
+    for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
     {
         for (i = 0; i < NEWHOPE_SYMBYTES; i++)
-            extseed[m*34 + i] = masked_seed[m*34 + i];
-        extseed[m*34 + 32] = nonce;
-        r = &((masked_r->poly_shares)[m]);
-        for (i = 0; i < NEWHOPE_N/64; i++)
-        {
-            extseed[m*34 + 33] = i;
-            shake256_masked(buf, 128, &extseed[m*34], 34);
-            for (j = 0; j < 64; j++)
-            {
-                a = buf[2*j];
-                b = buf[2*j+1];
-                r->coeffs[64*i+j] = hw(a) + NEWHOPE_Q - hw(b); // to be fixed sum of binomial
-            }
-        } 
+            masked_extseed[i + 34*k] = masked_seed[i + 34*k];
+        masked_extseed[32 + 34*k] = nonce;
     }
+
+    for (j = 0; j < 8; j++) /* Generate noise in blocks of 64 coefficients */
+    {
+        for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+            masked_extseed[33 + 34*k] = j; /* for each extseed[33] = j, it will be used to generate 64 coefficients*/
+        shake256_masked(buf, 128, masked_extseed, 34);
+
+        /* we process four coefficients at one time */
+        for (i = 0; i < 64; i+=4)
+        {
+            for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+            {
+                t = (((uint64_t) buf[2*i + 7 + k*32]) << 56) |
+                    (((uint64_t) buf[2*i + 6 + k*32]) << 48) |
+                    (((uint64_t) buf[2*i + 5 + k*32]) << 40) |
+                    (((uint64_t) buf[2*i + 4 + k*32]) << 32) |
+                    (((uint64_t) buf[2*i + 3 + k*32]) << 24) |
+                    (((uint64_t) buf[2*i + 2 + k*32]) << 16) |
+                    (((uint64_t) buf[2*i + 1 + k*32]) <<  8) |
+                    ((uint64_t) buf[2*i + 0 + k*32]);
+                
+                // extract 8bits from t
+                a1.shares[k] = (uint32_t) ((t >>  0) & 0xFF); b1.shares[k] = (uint32_t) ((t >>  8) & 0xFF);
+                a2.shares[k] = (uint32_t) ((t >> 16) & 0xFF); b2.shares[k] = (uint32_t) ((t >> 24) & 0xFF);
+                a3.shares[k] = (uint32_t) ((t >> 32) & 0xFF); b3.shares[k] = (uint32_t) ((t >> 40) & 0xFF);
+                a4.shares[k] = (uint32_t) ((t >> 48) & 0xFF); b4.shares[k] = (uint32_t) ((t >> 56) & 0xFF);
+            }
+
+            // compute hw
+            CBD(&a1, &b1, &y1);
+            CBD(&a2, &b2, &y2);
+            CBD(&a3, &b3, &y3);
+            CBD(&a4, &b4, &y4);
+
+            for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+            {
+                masked_r->poly_shares[k].coeffs[j*64 + i + 0] = y1.shares[k];
+                masked_r->poly_shares[k].coeffs[j*64 + i + 1] = y2.shares[k];
+                masked_r->poly_shares[k].coeffs[j*64 + i + 2] = y3.shares[k];
+                masked_r->poly_shares[k].coeffs[j*64 + i + 3] = y4.shares[k];
+            }
+        }
+    }    
 }
+
+
 
 // msg is a boolean mask of message
 void poly_masked_frommsg(masked_poly *masked_r, const unsigned char *msg)

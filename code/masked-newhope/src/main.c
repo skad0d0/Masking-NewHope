@@ -13,7 +13,7 @@ void test_msg()
     int i,k;
     for (i = 0; i < 32*4; i++)
     {
-        m[i] = rand8();
+        m[i] = rand() & 0xff;
         // for (k = 0; k < 4; k++)
         //     m[i + 32*k] = i+k;
     }

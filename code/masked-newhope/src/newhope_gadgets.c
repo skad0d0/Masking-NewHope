@@ -47,3 +47,30 @@ void newhope_decryption(Masked* x, Masked* b)
   modulus_switch(x, NEWHOPE_Q, 7);
   convert_2_l_to_1bit_bool(x, b);
 }
+
+void CBD(Masked* a, Masked* b, Masked* y)
+{
+  Masked h_a, h_b;
+  Masked t1, t2;
+  int eta = 8; /* y in [-8, 8] */
+  
+  for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j) t1.shares[j] = (a->shares[j])&1;
+  convert_B2A(&t1, &h_a);
+  for(int i=1; i < eta; ++i){
+    for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j) t1.shares[j] = (a->shares[j] >> i)&1;
+    convert_B2A(&t1, &t2);
+    for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j) h_a.shares[j] = (h_a.shares[j] + t2.shares[j])%NEWHOPE_Q;
+  }
+
+  for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j) t1.shares[j] = (b->shares[j])&1;
+  convert_B2A(&t1, &h_b);
+  for(int i=1; i < eta; ++i){
+    for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j) t1.shares[j] = (b->shares[j] >> i)&1;
+    convert_B2A(&t1, &t2);
+    for(int j=0; j < NEWHOPE_MASKING_ORDER+1; ++j) h_b.shares[j] = (h_b.shares[j] + t2.shares[j])%NEWHOPE_Q;
+  }
+
+  for(int i =0; i < NEWHOPE_MASKING_ORDER+1; ++i){
+    y->shares[i] = (h_a.shares[i] - h_b.shares[i])%NEWHOPE_Q;
+  }
+}

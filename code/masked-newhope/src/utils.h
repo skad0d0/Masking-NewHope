@@ -14,7 +14,6 @@ void unmask_bitstring(unsigned char * bs);
 
 
 void print_poly(poly* p);
-// void compare_poly(poly* a, poly* b);
 void print_masked_poly(masked_poly* mp);
 void print_masked_poly_arith(masked_poly* x);
 void print_masked_arith(Masked* x, int q);
