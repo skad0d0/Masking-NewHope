@@ -1,6 +1,7 @@
 #include "poly.h"
 #include "gadgets.h"
 #include "randombytes.h"
+#include "fips202.h"
 #include "utils.h"
 #include <math.h>
 #include <stdio.h>
@@ -63,9 +64,31 @@ void test_boolean_mask()
 
 }
 
+void test_CBD()
+{
+    unsigned char seeds[32], masked_seeds[32 * 4];
+    int nonce = 0, i;
+
+    poly r;
+    masked_poly masked_r;
+
+    for (i = 0; i < 32; i++)
+        seeds[i] = rand8();
+
+    random_boolean_mask(masked_seeds, seeds);
+
+    poly_sample(&r, seeds, nonce);
+
+    print_poly(&r);
+
+    poly_masked_sample(&masked_r, masked_seeds, nonce);
+
+    print_masked_poly(&masked_r);
+}
 
 void main()
 {
-    test_msg();
+    // test_msg();
     // test_boolean_mask();
+    test_CBD();
 }

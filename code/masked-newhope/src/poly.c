@@ -284,7 +284,7 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce)
 #error "poly_sample in poly.c only supports k=8"
 #endif
   unsigned char buf[128], a, b;
-//  uint32_t t, d, a, b, c;
+//  uint32_t t, d, c;
   int i,j;
 
   unsigned char extseed[NEWHOPE_SYMBYTES+2];
@@ -302,7 +302,7 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce)
     {
       a = buf[2*j];
       b = buf[2*j+1];
-      r->coeffs[64*i+j] = hw(a) + NEWHOPE_Q - hw(b);
+      r->coeffs[64*i+j] = (hw(a) + NEWHOPE_Q - hw(b));
       /*
       t = buf[j] | ((uint32_t)buf[j+1] << 8) | ((uint32_t)buf[j+2] << 16) | ((uint32_t)buf[j+3] << 24);
       d = 0;

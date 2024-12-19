@@ -150,7 +150,7 @@ void poly_masked_invntt(masked_poly *masked_r)
 
 void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce)
 {
-    unsigned char buf[128 * (NEWHOPE_MASKING_ORDER + 1)], a, b;
+    unsigned char buf[128 * (NEWHOPE_MASKING_ORDER + 1)];
     int i, j, k;
     Masked a1, a2, a3, a4, b1, b2, b3, b4, y1, y2, y3, y4;
     unsigned char masked_extseed[(NEWHOPE_SYMBYTES+2) * (NEWHOPE_MASKING_ORDER+1)];
@@ -159,14 +159,18 @@ void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed,
     for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
     {
         for (i = 0; i < NEWHOPE_SYMBYTES; i++)
-            masked_extseed[i + 34*k] = masked_seed[i + 34*k];
-        masked_extseed[32 + 34*k] = nonce;
+            masked_extseed[i + 34*k] = masked_seed[i + 32*k];
+        masked_extseed[32 + 34*k] = 0;
     }
+    masked_extseed[32] = nonce;
+
 
     for (j = 0; j < 8; j++) /* Generate noise in blocks of 64 coefficients */
     {
         for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
-            masked_extseed[33 + 34*k] = j; /* for each extseed[33] = j, it will be used to generate 64 coefficients*/
+            masked_extseed[33 + 34*k] = 0; /* for each extseed[33] = j, it will be used to generate 64 coefficients*/
+        masked_extseed[33] = j;
+
         shake256_masked(buf, 128, masked_extseed, 34);
 
         /* we process four coefficients at one time */
@@ -174,14 +178,14 @@ void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed,
         {
             for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
             {
-                t = (((uint64_t) buf[2*i + 7 + k*32]) << 56) |
-                    (((uint64_t) buf[2*i + 6 + k*32]) << 48) |
-                    (((uint64_t) buf[2*i + 5 + k*32]) << 40) |
-                    (((uint64_t) buf[2*i + 4 + k*32]) << 32) |
-                    (((uint64_t) buf[2*i + 3 + k*32]) << 24) |
-                    (((uint64_t) buf[2*i + 2 + k*32]) << 16) |
-                    (((uint64_t) buf[2*i + 1 + k*32]) <<  8) |
-                    ((uint64_t) buf[2*i + 0 + k*32]);
+                t = (((uint64_t) buf[2*i + 7 + k*128]) << 56) |
+                    (((uint64_t) buf[2*i + 6 + k*128]) << 48) |
+                    (((uint64_t) buf[2*i + 5 + k*128]) << 40) |
+                    (((uint64_t) buf[2*i + 4 + k*128]) << 32) |
+                    (((uint64_t) buf[2*i + 3 + k*128]) << 24) |
+                    (((uint64_t) buf[2*i + 2 + k*128]) << 16) |
+                    (((uint64_t) buf[2*i + 1 + k*128]) <<  8) |
+                    ((uint64_t) buf[2*i + 0 + k*128]);
                 
                 // extract 8bits from t
                 a1.shares[k] = (uint32_t) ((t >>  0) & 0xFF); b1.shares[k] = (uint32_t) ((t >>  8) & 0xFF);
@@ -206,6 +210,62 @@ void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed,
         }
     }    
 }
+
+// process 2 coefficients at one time
+
+// void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce)
+// {
+//     unsigned char buf[128 * (NEWHOPE_MASKING_ORDER + 1)];
+//     int i, j, k;
+//     Masked a1, a2, a3, a4, b1, b2, b3, b4, y1, y2, y3, y4;
+//     unsigned char masked_extseed[(NEWHOPE_SYMBYTES+2) * (NEWHOPE_MASKING_ORDER+1)];
+//     uint32_t t;
+
+//     for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+//     {
+//         for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+//             masked_extseed[i + 34*k] = masked_seed[i + 32*k];
+//         masked_extseed[32 + 34*k] = 0;
+//     }
+//     masked_extseed[32] = nonce;
+
+
+//     for (j = 0; j < 8; j++) /* Generate noise in blocks of 64 coefficients */
+//     {
+//         for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+//             masked_extseed[33 + 34*k] = 0; /* for each extseed[33] = j, it will be used to generate 64 coefficients*/
+//         masked_extseed[33] = j;
+
+//         shake256_masked(buf, 128, masked_extseed, 34);
+
+//         /* we process two coefficients at one time */
+//         for (i = 0; i < 64; i+=2)
+//         {
+//             for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+//             {
+//                 t = (((uint32_t) buf[2*i + 3 + k*128]) << 24) |
+//                     (((uint32_t) buf[2*i + 2 + k*128]) << 16) |
+//                     (((uint32_t) buf[2*i + 1 + k*128]) <<  8) |
+//                     ((uint32_t)  buf[2*i + 0 + k*128]);
+                
+//                 // extract 8bits from t
+//                 a1.shares[k] = ((t >>  0) & 0xFF); b1.shares[k] = ((t >>  8) & 0xFF);
+//                 a2.shares[k] = ((t >> 16) & 0xFF); b2.shares[k] = ((t >> 24) & 0xFF);
+
+//             }
+
+//             // compute hw
+//             CBD(&a1, &b1, &y1);
+//             CBD(&a2, &b2, &y2);
+
+//             for (k = 0; k < (NEWHOPE_MASKING_ORDER + 1); k++)
+//             {
+//                 masked_r->poly_shares[k].coeffs[j*64 + i + 0] = y1.shares[k];
+//                 masked_r->poly_shares[k].coeffs[j*64 + i + 1] = y2.shares[k];
+//             }
+//         }
+//     }    
+// }
 
 
 

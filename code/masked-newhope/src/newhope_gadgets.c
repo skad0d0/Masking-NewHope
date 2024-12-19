@@ -71,6 +71,6 @@ void CBD(Masked* a, Masked* b, Masked* y)
   }
 
   for(int i =0; i < NEWHOPE_MASKING_ORDER+1; ++i){
-    y->shares[i] = (h_a.shares[i] - h_b.shares[i])%NEWHOPE_Q;
+    y->shares[i] = (h_a.shares[i] + NEWHOPE_Q - h_b.shares[i])%NEWHOPE_Q;
   }
 }
