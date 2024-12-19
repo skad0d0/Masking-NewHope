@@ -25,4 +25,5 @@ void modulus_switch(Masked* x, unsigned q, unsigned shift);
 void newhope_decryption(Masked* x, Masked* b);
 void random_boolean_mask(unsigned char *masked_m, unsigned char *m);
 void CBD(Masked* a, Masked* b, Masked* y);
+void sec_and(Masked* x, Masked* y, Masked* res, int k);
 #endif

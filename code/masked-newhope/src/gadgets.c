@@ -102,6 +102,8 @@ void convert_2_l_to_1bit_bool(Masked* x, Masked* b)
       r = rand32();
       b->shares[j] ^= r;
       b->shares[NEWHOPE_MASKING_ORDER] ^= r;
+      b->shares[j] &= 1;
+      b->shares[NEWHOPE_MASKING_ORDER] &= 1;
     }
   }
 

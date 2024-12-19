@@ -12,6 +12,7 @@ def to_unsigned(t, bits):
     return t & mask
 
 q = 12289
+print(hex(q-1))
 a1 = 3*q//4+1
 a2 = 3*q//4
 
@@ -26,12 +27,12 @@ t = int(t - q//2)
 t = to_unsigned(t, 16)
 t = int(t) >> 15
 
-print(t)
-print("--------------------")
+# print(t)
+# print("--------------------")
 
-kq = 3329
-r1 = kq - 1
-r1 = ((r1 << 1)+kq//2) // kq
-r1 = int(r1)
-print(r1)
-print(r1&1)
+# kq = 3329
+# r1 = kq - 1
+# r1 = ((r1 << 1)+kq//2) // kq
+# r1 = int(r1)
+# print(r1)
+# print(r1&1)

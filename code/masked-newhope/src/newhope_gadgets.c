@@ -74,3 +74,32 @@ void CBD(Masked* a, Masked* b, Masked* y)
     y->shares[i] = (h_a.shares[i] + NEWHOPE_Q - h_b.shares[i])%NEWHOPE_Q;
   }
 }
+
+void sec_and(Masked* x, Masked* y, Masked* res, int k){
+
+#if MASKING_ORDER == 1
+    uint16_t u = rand16()&((1<<k)-1);
+    uint16_t z;
+    z = u ^ (x->shares[0] & y->shares[0]);
+    z = z ^ (x->shares[0] & y->shares[1]);
+    z = z ^ (x->shares[1] & y->shares[0]);
+    z = z ^ (x->shares[1] & y->shares[1]);
+    res->shares[0] = z;
+    res->shares[1] = u;
+
+#else
+    Masked r;
+    uint16_t i, j, z_ij, z_ji;
+    for(i=0; i < NEWHOPE_MASKING_ORDER + 1; ++i) r.shares[i] = x->shares[i] & y->shares[i];
+    for(i=0; i < NEWHOPE_MASKING_ORDER + 1; ++i)
+        for(j=i+1; j < NEWHOPE_MASKING_ORDER + 1; ++j){
+            z_ij  = rand16()&((1<<k)-1);
+            z_ji  = (x->shares[i] & y->shares[j]) ^ z_ij;
+            z_ji ^= (x->shares[j] & y->shares[i]);
+            r.shares[i] ^= z_ij;
+            r.shares[j] ^= z_ji;            
+        }
+    for(i=0; i < NEWHOPE_MASKING_ORDER + 1; ++i) res->shares[i] = r.shares[i];
+#endif
+
+}

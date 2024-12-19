@@ -88,7 +88,7 @@ void test_CBD()
 
 void main()
 {
-    // test_msg();
+    test_msg();
     // test_boolean_mask();
-    test_CBD();
+    // test_CBD();
 }
