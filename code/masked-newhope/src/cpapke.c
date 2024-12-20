@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "api.h"
 #include "poly.h"
+#include "utils.h"
 #include "randombytes.h"
 #include "fips202.h"
 
@@ -191,9 +192,7 @@ void cpapke_dec(unsigned char *m,
   decode_c(&uhat, &vprime, c);
   poly_mul_pointwise(&tmp, &shat, &uhat);
   poly_invntt(&tmp);
-
   poly_sub(&tmp, &tmp, &vprime);
-
   poly_tomsg(m, &tmp); // masking
 }
 
@@ -234,17 +233,17 @@ void cpapke_masked_enc(unsigned char *masked_c,
 
 void cpapke_masked_dec(unsigned char *masked_m,
                const unsigned char *masked_c,
-               const unsigned char *sk)
+               masked_poly *mskp)
 {
-  masked_poly masked_shat, masked_tmp;
+  masked_poly masked_tmp;
   poly uhat, vprime;
   
-  poly_masked_frombytes(&masked_shat, sk);
+  // poly_masked_frombytes(&masked_shat, sk);
+
   decode_c(&uhat, &vprime, masked_c);
   
-  poly_halfmasked_mul_pointwise(&masked_tmp, &uhat, &masked_shat);
+  poly_halfmasked_mul_pointwise(&masked_tmp, &uhat, mskp);
   poly_masked_invntt(&masked_tmp);
   poly_halfmasked_sub(&masked_tmp, &masked_tmp, &vprime);
   poly_masked_tomsg(masked_m, &masked_tmp);
-  
 }

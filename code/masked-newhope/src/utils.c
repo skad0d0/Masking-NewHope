@@ -51,18 +51,30 @@ void print_masked_bool(Masked* y){
   printf("0x%x) = %i\n", y->shares[NEWHOPE_MASKING_ORDER], t);
 }
 
-void print_bitstring(unsigned char * bs){
-  for(int i=0; i < 32; ++i) printf("%X ",bs[i]);
+void print_bitstring(unsigned char * bs, int len){
+  for(int i=0; i < len; ++i) printf("%X ",bs[i]);
   printf("\n");
 }
 
-void unmask_bitstring(unsigned char * bs){
+// void unmask_bitstring(unsigned char * bs){
   
-  unsigned char unmasked_buf[32];
+//   unsigned char unmasked_buf[32];
 
-  for(int i=0; i < 32; ++i) unmasked_buf[i] = 0;
+//   for(int i=0; i < 32; ++i) unmasked_buf[i] = 0;
+//   for(int k=0; k < NEWHOPE_MASKING_ORDER+1; ++k){
+//     for(int i=0; i < 32; ++i) unmasked_buf[i] ^= bs[i+k*32];
+//   }
+//   print_bitstring(unmasked_buf, 32);
+// }
+
+void unmask_bitstring(unsigned char * bs, int len){
+  
+  unsigned char unmasked_buf[len];
+
+  for(int i=0; i < len; ++i) unmasked_buf[i] = 0;
   for(int k=0; k < NEWHOPE_MASKING_ORDER+1; ++k){
-    for(int i=0; i < 32; ++i) unmasked_buf[i] ^= bs[i+k*32];
+    for(int i=0; i < len; ++i) unmasked_buf[i] ^= bs[i+k*len];
   }
-  print_bitstring(unmasked_buf);
+  for(int i=0; i < len; ++i) printf("%X ",unmasked_buf[i]);
+  printf("\n");
 }

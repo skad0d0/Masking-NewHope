@@ -20,6 +20,6 @@ void cpapke_masked_enc(unsigned char *masked_c,
 
 void cpapke_masked_dec(unsigned char *masked_m,
                const unsigned char *masked_c,
-               const unsigned char *sk);
+               masked_poly *mskp);
 
 #endif

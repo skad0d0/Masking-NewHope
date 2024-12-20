@@ -9,8 +9,9 @@
 #include "poly.h"
 #include "gadgets.h"
 
-void print_bitstring(unsigned char * bs);
-void unmask_bitstring(unsigned char * bs);
+void print_bitstring(unsigned char * bs, int len);
+// void unmask_bitstring(unsigned char * bs);
+void unmask_bitstring(unsigned char * bs, int len);
 
 
 void print_poly(poly* p);

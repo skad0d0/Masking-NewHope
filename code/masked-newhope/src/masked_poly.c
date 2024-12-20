@@ -8,7 +8,7 @@
 #include "gadgets.h"
 
 // convert bytes to masked poly
-void poly_masked_frombytes(masked_poly *masked_r, const unsigned char *a)
+void poly_masked_frombytes(masked_poly *masked_r, const unsigned char *a) /* to be fixed */
 {
    int i, m;
    poly *r;

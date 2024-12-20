@@ -107,22 +107,21 @@ void convert_2_l_to_1bit_bool(Masked* x, Masked* b)
     }
   }
 
-void random_boolean_mask(unsigned char *masked_m, unsigned char *m)
+void random_boolean_mask(unsigned char *masked_m, unsigned char *m, int length)
 {
   int i, k;
-  unsigned char share, random_mask[NEWHOPE_MASKING_ORDER][32];
+  unsigned char share;
 
   // generate random 8bits mask
-  for (i = 0; i < 32; i++)
+  for (i = 0; i < length; i++)
   {
     share = m[i];
     for (k = 0; k < NEWHOPE_MASKING_ORDER; k++)
     {
-      masked_m[i + 32*k] = rand8();
-      share ^= masked_m[i + 32*k];
+      masked_m[i + length*k] = rand8();
+      share ^= masked_m[i + length*k];
     }
-    masked_m[i + 32*3] = share;
+    masked_m[i + length*NEWHOPE_MASKING_ORDER] = share;
   }
-
 
 }
