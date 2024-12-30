@@ -7,8 +7,16 @@
 #include "fips202.h"
 #include "gadgets.h"
 
-// convert bytes to masked poly
-void poly_masked_frombytes(masked_poly *masked_r, const unsigned char *a) /* to be fixed */
+/**
+ * @brief Converts a message to a masked polynomial.
+ *
+ * This function takes a message `msg` and converts it into a masked polynomial `masked_r`.
+ * The conversion process involves encoding the message into the polynomial shares of the masked polynomial.
+ *
+ * @param[out] masked_r Pointer to the masked polynomial structure where the result will be stored.
+ * @param[in] msg Pointer to the input message buffer.
+ */
+void poly_masked_frombytes(masked_poly *masked_r, const unsigned char *a)
 {
    int i, m;
    poly *r;
@@ -34,8 +42,17 @@ void poly_masked_frombytes(masked_poly *masked_r, const unsigned char *a) /* to 
    }
 }
 
-// masked poly addition
-// masked_r = masked_a + masked_b
+
+/**
+ * @brief Adds two masked polynomials and stores the result in a third masked polynomial.
+ *
+ * This function performs element-wise addition of two masked polynomials, `masked_a` and `masked_b`,
+ * and stores the result in `masked_r`. The addition is performed modulo `NEWHOPE_Q`.
+ *
+ * @param[out] masked_r The resulting masked polynomial after addition.
+ * @param[in] masked_a The first masked polynomial to be added.
+ * @param[in] masked_b The second masked polynomial to be added.
+ */
 void poly_masked_add(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b)
 {
     int i,m;
@@ -50,8 +67,17 @@ void poly_masked_add(masked_poly *masked_r, const masked_poly *masked_a, const m
     }
 }
 
-// masked poly subtraction
-// masked_r = masked_a - masked_b
+
+/**
+ * @brief Subtracts two masked polynomials and stores the result in a third masked polynomial.
+ *
+ * This function performs element-wise subtraction of two masked polynomials, `masked_a` and `masked_b`,
+ * and stores the result in `masked_r`. The subtraction is performed for each share of the masked polynomials.
+ *
+ * @param[out] masked_r The masked polynomial to store the result of the subtraction.
+ * @param[in] masked_a The first masked polynomial operand.
+ * @param[in] masked_b The second masked polynomial operand.
+ */
 void poly_masked_sub(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b)
 {
     int i,m;
@@ -66,7 +92,16 @@ void poly_masked_sub(masked_poly *masked_r, const masked_poly *masked_a, const m
     }
 }
 
-// r = a - b
+/**
+ * @brief Subtracts a polynomial from a half-masked polynomial.
+ *
+ * This function performs the subtraction of a polynomial `b` from a half-masked polynomial `masked_a`
+ * and stores the result in `masked_r`. The subtraction is performed modulo `NEWHOPE_Q`.
+ *
+ * @param[out] masked_r The result of the subtraction, stored as a masked polynomial.
+ * @param[in] masked_a The half-masked polynomial from which `b` is subtracted.
+ * @param[in] b The polynomial to be subtracted from `masked_a`.
+ */
 void poly_halfmasked_sub(masked_poly *masked_r, const masked_poly *masked_a, const poly *b)
 {
     unsigned int i, m;
@@ -87,6 +122,17 @@ void poly_halfmasked_sub(masked_poly *masked_r, const masked_poly *masked_a, con
     }
 }
 
+/**
+ * @brief Multiplies two masked polynomials pointwise and stores the result in a masked polynomial.
+ *
+ * This function performs a pointwise multiplication of two masked polynomials `masked_a` and `masked_b`,
+ * and stores the result in the masked polynomial `masked_r`. The multiplication is performed for each
+ * share of the masked polynomials.
+ *
+ * @param[out] masked_r Pointer to the masked polynomial where the result will be stored.
+ * @param[in] masked_a Pointer to the first masked polynomial operand.
+ * @param[in] masked_b Pointer to the second masked polynomial operand.
+ */
 void poly_masked_mul_pointwise(masked_poly *masked_r, const masked_poly *masked_a, const masked_poly *masked_b)
 {
     int i,m;
@@ -105,6 +151,16 @@ void poly_masked_mul_pointwise(masked_poly *masked_r, const masked_poly *masked_
     }
 }
 
+/**
+ * @brief Multiplies a polynomial with a masked polynomial pointwise and stores the result in a masked polynomial.
+ *
+ * This function performs a pointwise multiplication of a polynomial `a` with a masked polynomial `masked_b` and stores
+ * the result in the masked polynomial `masked_r`. The multiplication is performed for each share of the masked polynomials.
+ *
+ * @param[out] masked_r The resulting masked polynomial after pointwise multiplication.
+ * @param[in] a The input polynomial to be multiplied.
+ * @param[in] masked_b The input masked polynomial to be multiplied.
+ */
 void poly_halfmasked_mul_pointwise(masked_poly *masked_r, const poly *a, const masked_poly *masked_b)
 {
     int i,m;
@@ -123,6 +179,15 @@ void poly_halfmasked_mul_pointwise(masked_poly *masked_r, const poly *a, const m
 }
 
 
+/**
+ * @brief Applies the Number Theoretic Transform (NTT) to each polynomial share in a masked polynomial.
+ *
+ * This function iterates over each polynomial share in the masked polynomial and performs the following steps:
+ * 1. Multiplies the coefficients of the polynomial by precomputed gamma values in Montgomery form.
+ * 2. Applies the NTT to the polynomial coefficients.
+ *
+ * @param masked_r Pointer to the masked polynomial structure containing the polynomial shares.
+ */
 void poly_masked_ntt(masked_poly *masked_r)
 {
     int m;
@@ -135,6 +200,15 @@ void poly_masked_ntt(masked_poly *masked_r)
     }
 }
 
+/**
+ * @brief Perform the inverse Number Theoretic Transform (NTT) on a masked polynomial.
+ *
+ * This function takes a masked polynomial and applies the inverse NTT to each of its shares.
+ * The process involves bit-reversing the coefficients, performing the inverse NTT using
+ * precomputed omegas, and multiplying the coefficients by precomputed gamma values.
+ *
+ * @param masked_r Pointer to the masked polynomial to be transformed.
+ */
 void poly_masked_invntt(masked_poly *masked_r)
 {
     int m;
@@ -148,6 +222,16 @@ void poly_masked_invntt(masked_poly *masked_r)
     }
 }
 
+/**
+ * @brief Implementation of masked polynomial sampling for NewHope cryptographic scheme.
+ *
+ * This function generates a masked polynomial sample using a masked seed and a nonce.
+ * It processes the coefficients in blocks of 64, and each block is processed four coefficients at a time.
+ *
+ * @param[out] masked_r       Pointer to the masked polynomial structure to store the result.
+ * @param[in]  masked_seed    Pointer to the masked seed used for sampling.
+ * @param[in]  nonce          Nonce value used for sampling.
+ */
 void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed, unsigned char nonce)
 {
     unsigned char buf[128 * (NEWHOPE_MASKING_ORDER + 1)];
@@ -269,7 +353,16 @@ void poly_masked_sample(masked_poly *masked_r, const unsigned char *masked_seed,
 
 
 
-// msg is a boolean mask of message
+
+/**
+ * @brief Converts a message into a masked polynomial representation.
+ *
+ * This function takes a message in the form of an unsigned char array and
+ * encodes it into a masked polynomial structure.
+ *
+ * @param[out] masked_r Pointer to the masked polynomial structure where the encoded message will be stored.
+ * @param[in] msg Pointer to the message to be encoded.
+ */
 void poly_masked_frommsg(masked_poly *masked_r, const unsigned char *msg)
 {
     encode_message(msg, masked_r);
@@ -277,6 +370,18 @@ void poly_masked_frommsg(masked_poly *masked_r, const unsigned char *msg)
 
 
 
+/**
+ * @brief Converts a masked polynomial to a message.
+ *
+ * This function takes a masked polynomial and converts it into a message
+ * by performing decryption and secure AND operations on the polynomial shares.
+ *
+ * @param msg Pointer to the output message buffer. The buffer should be large enough to hold the resulting message.
+ * @param masked_r Pointer to the input masked polynomial structure.
+ *
+ * The function initializes the message buffer to zero, then iterates over each coefficient
+ * of the polynomial shares, decrypts them, performs a secure AND operation, and updates the message buffer.
+ */
 void poly_masked_tomsg(unsigned char *msg, masked_poly *masked_r)
 {
     Masked ar1, ar2, bo1, bo2, t;
@@ -299,9 +404,18 @@ void poly_masked_tomsg(unsigned char *msg, masked_poly *masked_r)
         }
 
     }
-
 }
 
+/**
+ * @brief Unmasks a masked polynomial.
+ *
+ * This function takes a masked polynomial `mp` and combines its shares to 
+ * produce the original polynomial `p`. The unmasking process involves 
+ * summing the coefficients of the shares and taking the result modulo `NEWHOPE_Q`.
+ *
+ * @param mp Pointer to the masked polynomial structure.
+ * @param p Pointer to the polynomial structure where the result will be stored.
+ */
 void unmask_poly(masked_poly* mp, poly* p){
   int16_t temp;
   for(int i=0; i < NEWHOPE_N; ++i){

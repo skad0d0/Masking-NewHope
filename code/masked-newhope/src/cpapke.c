@@ -67,7 +67,7 @@ static void encode_c(unsigned char *r, const poly *b, const poly *v)
 *              - poly *v:                pointer to output polynomial v
 *              - const unsigned char *r: pointer to input byte array
 **************************************************/
-static void decode_c(poly *b, poly *v, const unsigned char *r)
+void decode_c(poly *b, poly *v, const unsigned char *r)
 {
   poly_frombytes(b, r);
   poly_decompress(v, r+NEWHOPE_POLYBYTES);
@@ -196,10 +196,21 @@ void cpapke_dec(unsigned char *m,
   poly_tomsg(m, &tmp); // masking
 }
 
+/**
+ * @brief Encrypts a message using the masked CPA-secure public key encryption scheme.
+ *
+ * This function performs the encryption of a message using the masked CPA-secure public key encryption scheme.
+ * It takes the masked message, public key, and masked coins as inputs, and produces the masked ciphertext.
+ *
+ * @param[out] masked_c       The output masked ciphertext.
+ * @param[in]  masked_m       The input masked message.
+ * @param[in]  pk             The public key.
+ * @param[in]  masked_coins   The masked coins used for encryption.
+ */
 void cpapke_masked_enc(unsigned char *masked_c,
-               const unsigned char *masked_m,
-               const unsigned char *pk,
-               const unsigned char *masked_coins)
+                 const unsigned char *masked_m,
+                 const unsigned char *pk,
+                 const unsigned char *masked_coins)
 {
   poly bhat, ahat, uhat, vprime;
   masked_poly masked_v, masked_sprime, masked_eprime, masked_eprimeprime, masked_uhat, masked_vprime;
@@ -231,6 +242,60 @@ void cpapke_masked_enc(unsigned char *masked_c,
   encode_c(masked_c, &uhat, &vprime);
 }
 
+void cpapke_masked_enc_no_encode(Masked *m_uhat,
+                                 Masked *m_vprime,
+                    const unsigned char *masked_m,
+                    const unsigned char *pk,
+                    const unsigned char *masked_coins)
+{
+  poly bhat, ahat, uhat, vprime;
+  masked_poly masked_v, masked_sprime, masked_eprime, masked_eprimeprime, masked_uhat, masked_vprime;
+  unsigned char publicseed[NEWHOPE_SYMBYTES];
+  int i, k;
+  
+
+  poly_masked_frommsg(&masked_v, masked_m);
+  decode_pk(&bhat, publicseed, pk);
+  gen_a(&ahat, publicseed);
+
+  poly_masked_sample(&masked_sprime, masked_coins, 0);
+  poly_masked_sample(&masked_eprime, masked_coins, 1);
+  poly_masked_sample(&masked_eprimeprime, masked_coins, 2);
+
+  poly_masked_ntt(&masked_sprime);
+  poly_masked_ntt(&masked_eprime);
+
+  poly_halfmasked_mul_pointwise(&masked_uhat, &ahat, &masked_sprime);
+  poly_masked_add(&masked_uhat, &masked_uhat, &masked_eprime);
+
+  poly_halfmasked_mul_pointwise(&masked_vprime, &bhat, &masked_sprime);
+  poly_masked_invntt(&masked_vprime);
+
+  poly_masked_add(&masked_vprime, &masked_vprime, &masked_eprimeprime);
+  poly_masked_add(&masked_vprime, &masked_vprime, &masked_v);
+
+  for (i = 0; i < NEWHOPE_N; i++)
+  {
+    for (k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
+    {
+      m_uhat[i].shares[k] = masked_uhat.poly_shares[k].coeffs[i];
+      m_vprime[i].shares[k] = masked_vprime.poly_shares[k].coeffs[i];
+    }
+  }
+}
+
+
+
+/**
+ * @brief Decrypts a masked ciphertext using a masked secret key.
+ *
+ * This function performs the decryption of a masked ciphertext to produce
+ * a masked message. It uses various polynomial operations to achieve this.
+ *
+ * @param[out] masked_m  Pointer to the output masked message.
+ * @param[in]  masked_c  Pointer to the input masked ciphertext.
+ * @param[in]  mskp      Pointer to the masked secret key polynomial.
+ */
 void cpapke_masked_dec(unsigned char *masked_m,
                const unsigned char *masked_c,
                masked_poly *mskp)
