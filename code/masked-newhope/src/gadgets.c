@@ -22,6 +22,39 @@ void linear_arithmetic_refresh(Masked* x, unsigned q){
   #endif
 }
 
+void linear_boolean_refresh(Masked* x, unsigned k){
+  int r;
+  for(int i=0; i< NEWHOPE_MASKING_ORDER; ++i){
+    r = (int) rand32() & ((1<<k)-1);
+    x->shares[i] = (x->shares[i] ^ r);
+    x->shares[NEWHOPE_MASKING_ORDER] = (x->shares[NEWHOPE_MASKING_ORDER] ^ r);
+  }
+}
+
+void boolean_refresh(Masked* x, unsigned k){
+  int r;
+  for(int i=0; i< NEWHOPE_MASKING_ORDER+1; ++i){
+    for(int j=i+1; j < NEWHOPE_MASKING_ORDER+1; ++j){
+      r = (int) rand32() & ((1<<k)-1);
+      x->shares[i] = (x->shares[i] ^ r);
+      x->shares[j] = (x->shares[j] ^ r);
+    }
+  }
+}
+
+void fill_masked_mod_q(Masked* x){
+  uint16_t r[2];
+  for(int i=0; i < NEWHOPE_MASKING_ORDER; i+=2){
+    rand_q(r);
+    x->shares[i] = r[0];
+    x->shares[i+1] = r[1];
+  }
+  #if NEWHOPE_MASKING_ORDER%2 == 0
+  rand_q(r);
+  x->shares[NEWHOPE_MASKING_ORDER] = r[0];
+  #endif
+}
+
 // convert boolean representation x to arithmetic representation y
 void convert_B2A(Masked *x, Masked *y)
 {

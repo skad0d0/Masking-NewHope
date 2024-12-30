@@ -1,4 +1,4 @@
-from math import floor
+from math import floor, log2
 
 def flipabs(r):
     NEWHOPE_Q = 12289  # Replace with the actual value of NEWHOPE_Q
@@ -27,6 +27,9 @@ t = int(t - q//2)
 t = to_unsigned(t, 16)
 t = int(t) >> 15
 
+ell = 128
+r = ell / log2(12289)
+print(r)
 # print(t)
 # print("--------------------")
 
@@ -36,3 +39,4 @@ t = int(t) >> 15
 # r1 = int(r1)
 # print(r1)
 # print(r1&1)
+

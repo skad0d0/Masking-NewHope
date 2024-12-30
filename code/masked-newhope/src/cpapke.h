@@ -17,8 +17,7 @@ void cpapke_dec(unsigned char *m,
                const unsigned char *c,
                const unsigned char *sk);
 
-void cpapke_masked_enc_no_encode(Masked *m_uhat,
-               Masked *m_vprime,
+void cpapke_masked_enc_no_encode(Masked *mct,
                const unsigned char *masked_m,
                const unsigned char *pk,
                const unsigned char *masked_coins);

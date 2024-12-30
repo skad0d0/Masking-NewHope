@@ -14,7 +14,9 @@ typedef struct
 } Masked;
 
 void linear_arithmetic_refresh(Masked* x, unsigned q);
-
+void linear_boolean_refresh(Masked* x, unsigned k);
+void boolean_refresh(Masked* x, unsigned k);
+void fill_masked_mod_q(Masked* x);
 void convert_B2A(Masked *x, Masked *y);
 
 void convert_2_l_to_1bit_bool(Masked* x, Masked* b);
@@ -27,6 +29,6 @@ void random_boolean_mask(unsigned char *masked_m, unsigned char *m, int length);
 void CBD(Masked* a, Masked* b, Masked* y);
 void sec_and(Masked* x, Masked* y, Masked* res, int k);
 
-
-int newhope_poly_comp_hybrid(Masked* mmasked_poly, poly ppoly);
+// high-order poly compare
+int newhope_poly_comp_hybrid(Masked* mmasked_poly, uint16_t* ppoly);
 #endif

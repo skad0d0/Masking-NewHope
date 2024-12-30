@@ -103,8 +103,3 @@ void sec_and(Masked* x, Masked* y, Masked* res, int k){
 #endif
 
 }
-
-int newhope_poly_comp_hybrid(Masked* mmasked_poly, poly ppoly)
-{
-  return 1;
-}

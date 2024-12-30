@@ -58,3 +58,12 @@ void rand_q(uint16_t v[2])
   v[0] = r%(NEWHOPE_Q);
   v[1] = r/NEWHOPE_Q;
 }
+
+uint16_t uniform_rand16(uint16_t max_val){
+  uint32_t bound = ((0x80000000)/max_val)*max_val;
+  uint32_t v;
+  do{
+    v = rand32()&(0x7FFFFFFF);
+  }while (v >= bound);
+  return v%max_val;
+}

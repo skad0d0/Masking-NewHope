@@ -242,8 +242,7 @@ void cpapke_masked_enc(unsigned char *masked_c,
   encode_c(masked_c, &uhat, &vprime);
 }
 
-void cpapke_masked_enc_no_encode(Masked *m_uhat,
-                                 Masked *m_vprime,
+void cpapke_masked_enc_no_encode(Masked *mct,
                     const unsigned char *masked_m,
                     const unsigned char *pk,
                     const unsigned char *masked_coins)
@@ -278,8 +277,8 @@ void cpapke_masked_enc_no_encode(Masked *m_uhat,
   {
     for (k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
     {
-      m_uhat[i].shares[k] = masked_uhat.poly_shares[k].coeffs[i];
-      m_vprime[i].shares[k] = masked_vprime.poly_shares[k].coeffs[i];
+      mct[    i].shares[k] = masked_uhat.poly_shares[k].coeffs[i];
+      mct[512+i].shares[k] = masked_vprime.poly_shares[k].coeffs[i];
     }
   }
 }
