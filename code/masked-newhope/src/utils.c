@@ -78,3 +78,13 @@ void unmask_bitstring(unsigned char * bs, int len){
   for(int i=0; i < len; ++i) printf("%X ",unmasked_buf[i]);
   printf("\n");
 }
+
+void combine_boolean_shares(unsigned char *unmasked_buf, unsigned char *bs, int len)
+{
+  // unsigned char unmasked_buf[len];
+
+  for(int i=0; i < len; ++i) unmasked_buf[i] = 0;
+  for(int k=0; k < NEWHOPE_MASKING_ORDER+1; ++k){
+    for(int i=0; i < len; ++i) unmasked_buf[i] ^= bs[i+k*len];
+  }
+}

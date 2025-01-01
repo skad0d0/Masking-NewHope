@@ -18,6 +18,7 @@ void linear_boolean_refresh(Masked* x, unsigned k);
 void boolean_refresh(Masked* x, unsigned k);
 void fill_masked_mod_q(Masked* x);
 void convert_B2A(Masked *x, Masked *y);
+unsigned char recombine_boolean_shares(Masked* x, int k);
 
 void convert_2_l_to_1bit_bool(Masked* x, Masked* b);
 
@@ -31,4 +32,5 @@ void sec_and(Masked* x, Masked* y, Masked* res, int k);
 
 // high-order poly compare
 int newhope_poly_comp_hybrid(Masked* mmasked_poly, uint16_t* ppoly);
+int newhope_bool_comp(Masked *x, unsigned char *y);
 #endif

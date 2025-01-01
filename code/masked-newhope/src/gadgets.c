@@ -31,6 +31,17 @@ void linear_boolean_refresh(Masked* x, unsigned k){
   }
 }
 
+unsigned char recombine_boolean_shares(Masked* x, int k)
+{
+  int i;
+  unsigned char r;
+  linear_boolean_refresh(x, k);
+  r = x->shares[0];
+  for(i=1; i < NEWHOPE_MASKING_ORDER + 1; i++) r ^= x->shares[i];
+  return r;
+}
+
+
 void boolean_refresh(Masked* x, unsigned k){
   int r;
   for(int i=0; i< NEWHOPE_MASKING_ORDER+1; ++i){

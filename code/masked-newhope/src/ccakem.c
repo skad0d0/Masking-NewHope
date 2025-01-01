@@ -100,17 +100,17 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 
   for(i=0;i<NEWHOPE_SYMBYTES;i++)                                                             /* Use hash of pk stored in sk */
     buf[1+NEWHOPE_SYMBYTES+i] = sk[NEWHOPE_CCAKEM_SECRETKEYBYTES-2*NEWHOPE_SYMBYTES+i];
+  
   shake256(k_coins_d, 3*NEWHOPE_SYMBYTES, buf, 2*NEWHOPE_SYMBYTES+1);
-
   cpapke_enc(ct_cmp, buf+1, pk, k_coins_d+NEWHOPE_SYMBYTES);                                  /* coins are in k_coins_d+NEWHOPE_SYMBYTES */
-
   for(i=0;i<NEWHOPE_SYMBYTES;i++)
     ct_cmp[i+NEWHOPE_CPAPKE_CIPHERTEXTBYTES] = k_coins_d[i+2*NEWHOPE_SYMBYTES];
 
   fail = verify(ct, ct_cmp, NEWHOPE_CCAKEM_CIPHERTEXTBYTES);
-
   shake256(k_coins_d+NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, ct, NEWHOPE_CCAKEM_CIPHERTEXTBYTES); /* overwrite coins in k_coins_d with h(c)  */
+  
   cmov(k_coins_d, sk+NEWHOPE_CCAKEM_SECRETKEYBYTES-NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, fail); /* Overwrite pre-k with z on re-encryption failure */
+  
   shake256(ss, NEWHOPE_SYMBYTES, k_coins_d, 2*NEWHOPE_SYMBYTES);                              /* hash concatenation of pre-k and h(c) to k */
 
   return 0;

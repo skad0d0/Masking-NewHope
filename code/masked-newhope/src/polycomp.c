@@ -308,6 +308,7 @@ void high_order_compress(Masked* x, Masked* y, unsigned q, unsigned k, unsigned 
   for(int i=0; i < NEWHOPE_MASKING_ORDER+1; ++i) y->shares[i] = (t.shares[i] >> ell)%(1<<(k));
 } 
 
+// returns 1 if x == y, 0 otherwise
 int newhope_poly_comp_hybrid(Masked* mmasked_poly, uint16_t* ppoly)
 {
   int l1 = 512, l2 = 512;
@@ -329,5 +330,24 @@ int newhope_poly_comp_hybrid(Masked* mmasked_poly, uint16_t* ppoly)
   convert_B2A(&b2, z+l1);
 
 
-  return zero_test_poly_mul_with_reduction(z, q, kappa, l1+1);    
+  return zero_test_poly_mul_with_reduction(z, q, kappa, l1+1);
+}
+
+// returns 1 if x == y, 0 otherwise
+int newhope_bool_comp(Masked *x, unsigned char *y)
+{
+  Masked z[32];
+  int i, k;
+
+  for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+  {
+    x[i].shares[0] = x[i].shares[0] ^ y[i];
+
+    for (k = 1; k < NEWHOPE_MASKING_ORDER+1; k++)
+      x[i].shares[k] ^= 0;
+    boolean_zero_test(&x[i], &z[i], 8, 3);
+  }
+  for (i = 1; i < NEWHOPE_SYMBYTES; i++)
+    sec_and(&z[0], &z[i], &z[0], 1);
+  return recombine_boolean_shares(&z[0], 1);
 }

@@ -12,7 +12,7 @@
 void print_bitstring(unsigned char * bs, int len);
 // void unmask_bitstring(unsigned char * bs);
 void unmask_bitstring(unsigned char * bs, int len);
-
+void combine_boolean_shares(unsigned char *unmasked_buf, unsigned char *bs, int len);
 
 void print_poly(poly* p);
 void print_masked_poly(masked_poly* mp);
