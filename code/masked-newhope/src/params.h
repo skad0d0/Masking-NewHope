@@ -8,7 +8,9 @@
 #define NEWHOPE_Q 12289 
 #define NEWHOPE_K 8           /* used in noise sampling */
 
+#ifndef NEWHOPE_MASKING_ORDER
 #define NEWHOPE_MASKING_ORDER 3 /* define masking order */
+#endif
 
 #define NEWHOPE_SYMBYTES 32   /* size of shared key, seeds/coins, and hashes */
 

@@ -341,7 +341,7 @@ int newhope_bool_comp(Masked *x, unsigned char *y)
 
   for (i = 0; i < NEWHOPE_SYMBYTES; i++)
   {
-    x[i].shares[0] = x[i].shares[0] ^ y[i];
+    x[i].shares[0] ^= y[i];
 
     for (k = 1; k < NEWHOPE_MASKING_ORDER+1; k++)
       x[i].shares[k] ^= 0;

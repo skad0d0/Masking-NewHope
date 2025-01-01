@@ -1,0 +1,99 @@
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 138163.6 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 1
+
+* Avg speed masked CCAKEM Dec: 5337367.2 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 141272.0 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 2
+
+* Avg speed masked CCAKEM Dec: 13765337.2 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 135173.5 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 3
+
+* Avg speed masked CCAKEM Dec: 25789016.8 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 143066.2 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 4
+
+* Avg speed masked CCAKEM Dec: 41538728.0 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 150406.6 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 5
+
+* Avg speed masked CCAKEM Dec: 63373857.2 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 159492.0 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 6
+
+* Avg speed masked CCAKEM Dec: 86321701.2 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 164317.8 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 7
+
+* Avg speed masked CCAKEM Dec: 108485970.4 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 145723.0 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 8
+
+* Avg speed masked CCAKEM Dec: 137280621.6 cycles.
+------------------------------------------------------------------------------
+
+* Benchmarks unmasked CCAKEM Dec: 
+
+* Avg speed unmasked CCAKEM Dec: 164860.2 cycles.
+
+* Benchmarks masked CCAKEM Dec: 
+
+* MASKING_ORDER = 9
+
+* Avg speed masked CCAKEM Dec: 172739520.0 cycles.
+------------------------------------------------------------------------------

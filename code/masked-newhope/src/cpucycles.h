@@ -1,6 +1,6 @@
 #ifndef CPUCYCLES_H
 #define CPUCYCLES_H
-
-long long cpucycles(void);
+#include "stdint.h"
+int64_t cpucycles(void);
 
 #endif

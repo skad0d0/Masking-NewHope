@@ -19,7 +19,7 @@ int masked_crypto_kem_dec(unsigned char *ss,
 {
     unsigned char buf[(2*NEWHOPE_SYMBYTES+1) * (NEWHOPE_MASKING_ORDER + 1)], m[32*(NEWHOPE_MASKING_ORDER + 1)];
     unsigned char masked_k_coin_d[3*NEWHOPE_SYMBYTES * (NEWHOPE_MASKING_ORDER + 1)], masked_k_coin[64 * (NEWHOPE_MASKING_ORDER + 1)];
-    unsigned char masked_coin[32*(NEWHOPE_MASKING_ORDER + 1)], new_coin[32], masked_dprime[32*(NEWHOPE_MASKING_ORDER + 1)];
+    unsigned char masked_coin[32*(NEWHOPE_MASKING_ORDER + 1)], new_coin[32];
     unsigned char c[NEWHOPE_CPAPKE_CIPHERTEXTBYTES], d[32], masked_c[NEWHOPE_CPAPKE_CIPHERTEXTBYTES* (NEWHOPE_MASKING_ORDER + 1)];
     Masked mct[1024], dprime[32];
     poly uhat, vprime;
@@ -59,14 +59,8 @@ int masked_crypto_kem_dec(unsigned char *ss,
         for (i = 0; i < 32; i++)
         {
             masked_coin[i + 32*k] = masked_k_coin_d[i + 32 + k*96];
-            masked_dprime[i + 32*k] = masked_k_coin_d[i + 64 + k*96];
+            dprime[i].shares[k] = masked_k_coin_d[i + 64 + k*96];
         }
-    }
-    
-    for (i = 0; i < 32; i++)
-    {
-        for (k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
-            dprime[i].shares[k] = masked_dprime[i + k*32];
     }
 
     cpapke_masked_enc_no_encode(mct, m, pk, masked_coin);

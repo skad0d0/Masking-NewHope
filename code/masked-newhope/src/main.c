@@ -6,18 +6,20 @@
 #include "ccakem.h"
 #include "masked_kem.h"
 #include "utils.h"
+#include "cpucycles.h"
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 
-
+#define ITER 100
+uint64_t start, stop;
 
 void test_enc()
 {
     unsigned char pk[NEWHOPE_CPAPKE_PUBLICKEYBYTES], sk[NEWHOPE_CPAPKE_SECRETKEYBYTES];
     unsigned char c[NEWHOPE_CPAPKE_CIPHERTEXTBYTES], masked_c[NEWHOPE_CPAPKE_CIPHERTEXTBYTES];
-    unsigned char m[32], rec_m[32], masked_m[32 * 4], masked_rec_m[32 * 4];
-    unsigned char seed[32], masked_seed[32 * 4];
+    unsigned char m[32], rec_m[32], masked_m[32 * (NEWHOPE_MASKING_ORDER+1)], masked_rec_m[32 * (NEWHOPE_MASKING_ORDER+1)];
+    unsigned char seed[32], masked_seed[32 * (NEWHOPE_MASKING_ORDER+1)];
     masked_poly mskp;
     for (int i = 0; i < 32; i++)
     {
@@ -131,11 +133,77 @@ void test_bool_zero()
     printf("zero test = %d\n", r);
 }
 
+void timing_ccakem_dec()
+{
+    printf("\n* Benchmarks unmasked CCAKEM Dec: \n");
+    unsigned char pk[NEWHOPE_CCAKEM_PUBLICKEYBYTES], sk[NEWHOPE_CCAKEM_SECRETKEYBYTES];
+    unsigned char ct[NEWHOPE_CCAKEM_CIPHERTEXTBYTES];
+    unsigned char ss[32], ss2[32];
 
+    crypto_kem_keypair(pk, sk);
+    crypto_kem_enc(ct, ss, pk);
+
+    start = cpucycles();
+    for (int i = 0; i < 10*ITER; i++)
+    {
+        crypto_kem_dec(ss2, ct, sk);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed unmasked CCAKEM Dec: %.1f cycles.\n", (double)(stop-start)/(10*ITER));
+}
+
+void timing_ccakem_dec_masked()
+{
+    printf("\n* Benchmarks masked CCAKEM Dec: \n");
+    printf("\n* MASKING_ORDER = %d\n", NEWHOPE_MASKING_ORDER);
+    unsigned char pk[NEWHOPE_CCAKEM_PUBLICKEYBYTES], sk[NEWHOPE_CCAKEM_SECRETKEYBYTES];
+    unsigned char ct[NEWHOPE_CCAKEM_CIPHERTEXTBYTES];
+    unsigned char sk_pke[NEWHOPE_CPAPKE_SECRETKEYBYTES], pkh[32];
+    unsigned char masked_s[32 * (NEWHOPE_MASKING_ORDER + 1)], s[32];
+    unsigned char ss[32], ss2[32], ss3[32 * (NEWHOPE_MASKING_ORDER + 1)];
+    masked_poly mskp;
+    poly skp;
+    int i, k;
+
+    crypto_kem_keypair(pk, sk);
+    for (i = 0; i < NEWHOPE_CPAPKE_SECRETKEYBYTES; i++)
+        sk_pke[i] = sk[i];
+    poly_frombytes(&skp, sk_pke);
+
+    for (int i = 0; i < NEWHOPE_N; i++)
+        mskp.poly_shares[0].coeffs[i] = skp.coeffs[i];
+    
+    for (int k = 1; k < NEWHOPE_MASKING_ORDER+1; k++)
+    {
+        for (int i = 0; i < NEWHOPE_N; i++)
+            mskp.poly_shares[k].coeffs[i] = 0;
+    }
+
+    for (i = 0; i < 32; i++)
+        pkh[i] = sk[i + NEWHOPE_CPAPKE_SECRETKEYBYTES + NEWHOPE_CPAPKE_PUBLICKEYBYTES];
+
+    for (i = 0; i < 32; i++)
+        s[i] = sk[i + NEWHOPE_CPAPKE_SECRETKEYBYTES + NEWHOPE_CPAPKE_PUBLICKEYBYTES + 32];
+    
+    random_boolean_mask(masked_s, s, 32);
+
+    crypto_kem_enc(ct, ss, pk);
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        masked_crypto_kem_dec(ss3, ct, &mskp, pk, pkh, masked_s);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked CCAKEM Dec: %.1f cycles.\n", (double)(stop-start)/(ITER));
+    printf("------------------------------------------------------------------------------\n");
+}
 
 void main()
 {
     // test_enc();
-    test_ccakem();
+    // test_ccakem();
     // test_bool_zero();
+    timing_ccakem_dec();
+    timing_ccakem_dec_masked();
 }
