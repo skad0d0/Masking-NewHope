@@ -4,7 +4,7 @@ This project implements Masked NewHope KEM, a cryptographic scheme designed for 
 
 ## Features
 - Implementation of Masked NewHope IND-CPA PKE
-- Implementation of Masked NewHope KEM decapsulation
+- Implementation of Masked NewHope IND-CCA KEM decapsulation
 - Performance evaluation tools
 
 ## Getting Started
