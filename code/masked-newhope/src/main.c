@@ -135,7 +135,7 @@ void test_bool_zero()
 
 void timing_ccakem_dec()
 {
-    printf("\n* Benchmarks unmasked CCAKEM Dec: \n");
+    printf("\n*----------------------- Timing unmasked CCAKEM Dec ------------------------\n");
     unsigned char pk[NEWHOPE_CCAKEM_PUBLICKEYBYTES], sk[NEWHOPE_CCAKEM_SECRETKEYBYTES];
     unsigned char ct[NEWHOPE_CCAKEM_CIPHERTEXTBYTES];
     unsigned char ss[32], ss2[32];
@@ -154,7 +154,7 @@ void timing_ccakem_dec()
 
 void timing_ccakem_dec_masked()
 {
-    printf("\n* Benchmarks masked CCAKEM Dec: \n");
+    printf("\n*------------------------ Timing masked CCAKEM Dec -------------------------\n");
     printf("\n* MASKING_ORDER = %d\n", NEWHOPE_MASKING_ORDER);
     unsigned char pk[NEWHOPE_CCAKEM_PUBLICKEYBYTES], sk[NEWHOPE_CCAKEM_SECRETKEYBYTES];
     unsigned char ct[NEWHOPE_CCAKEM_CIPHERTEXTBYTES];
@@ -196,6 +196,165 @@ void timing_ccakem_dec_masked()
     }
     stop = cpucycles();
     printf("\n* Avg speed masked CCAKEM Dec: %.1f cycles.\n", (double)(stop-start)/(ITER));
+}
+
+void timing_gadgets()
+{
+    printf("\n* ----------------------------- Timing gadgets -----------------------------\n");
+    Masked x[32], y[32], res[32];
+    Masked mm_maskedpoly[1024];
+    uint16_t ppoly[1024];
+    for (int i = 0; i < 32; i++)
+    {
+        for (int k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
+        {
+            x[i].shares[k] = rand8();
+            y[i].shares[k] = rand8();
+            res[i].shares[k] = rand8();
+        }
+    }
+    for (int i = 0; i < 1024; i++)
+        ppoly[i] = rand16();
+    
+    for (int i = 0; i < 1024; i++)
+    {
+        for (int k = 0; k < NEWHOPE_MASKING_ORDER + 1; k++)
+        {
+            mm_maskedpoly[i].shares[k] = rand8();
+        }
+    }
+
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        newhope_decryption(x, y);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed theta function: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        CBD(x, y, res);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed CBD function: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        newhope_poly_comp_hybrid(mm_maskedpoly, ppoly);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed high order ciphertext comparison: %.1f cycles.\n", (double)(stop-start)/(ITER));
+}
+
+void timing_poly_op()
+{
+    masked_poly a, b, r;
+    unsigned char msg[32 * (NEWHOPE_MASKING_ORDER + 1)];
+
+    printf("\n* ------------------- Timing masked polynomial operation -------------------\n");
+    for (int i = 0; i < 32 * (NEWHOPE_MASKING_ORDER + 1); i++)
+        msg[i] = rand8();
+    
+    for (int i = 0; i < NEWHOPE_N; i++)
+    {
+        a.poly_shares[0].coeffs[i] = rand16();
+        b.poly_shares[0].coeffs[i] = rand16();
+    }
+
+    for (int k = 1; k < NEWHOPE_MASKING_ORDER+1; k++)
+    {
+        for (int i = 0; i < NEWHOPE_N; i++)
+        {
+            a.poly_shares[k].coeffs[i] = 0;
+            b.poly_shares[k].coeffs[i] = 0;
+        }
+    }
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_frommsg(&a, msg);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly from msg: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_tomsg(msg, &a);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly to msg: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_add(&r, &a, &b);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly add: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_sub(&r, &a, &b);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly sub: %.1f cycles.\n", (double)(stop-start)/(ITER));   
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_halfmasked_sub(&r, &a, &b.poly_shares[0]);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed half masked poly sub: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_mul_pointwise(&r, &a, &b);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly mul pointwise: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_halfmasked_mul_pointwise(&r, &a.poly_shares[0], &b);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed half masked poly mul pointwise: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_ntt(&a);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly NTT: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_invntt(&a);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly inv NTT: %.1f cycles.\n", (double)(stop-start)/(ITER));
+
+    start = cpucycles();
+    for (int i = 0; i < ITER; i++)
+    {
+        poly_masked_sample(&a, &b, msg);
+    }
+    stop = cpucycles();
+    printf("\n* Avg speed masked poly sample: %.1f cycles.\n", (double)(stop-start)/(ITER));
     printf("------------------------------------------------------------------------------\n");
 }
 
@@ -206,4 +365,6 @@ void main()
     // test_bool_zero();
     timing_ccakem_dec();
     timing_ccakem_dec_masked();
+    timing_gadgets();
+    timing_poly_op();
 }

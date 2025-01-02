@@ -1,99 +1,369 @@
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 138163.6 cycles.
+* Avg speed unmasked CCAKEM Dec: 135193.4 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 1
 
-* Avg speed masked CCAKEM Dec: 5337367.2 cycles.
+* Avg speed masked CCAKEM Dec: 5393675.6 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 51.6 cycles.
+
+* Avg speed CBD function: 1336.4 cycles.
+
+* Avg speed high order ciphertext comparison: 995200.0 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 22324.4 cycles.
+
+* Avg speed masked poly to msg: 17611.6 cycles.
+
+* Avg speed masked poly add: 551.6 cycles.
+
+* Avg speed masked poly sub: 624.4 cycles.
+
+* Avg speed half masked poly sub: 571.6 cycles.
+
+* Avg speed masked poly mul pointwise: 36316.8 cycles.
+
+* Avg speed half masked poly mul pointwise: 8758.0 cycles.
+
+* Avg speed masked poly NTT: 29376.8 cycles.
+
+* Avg speed masked poly inv NTT: 31226.8 cycles.
+
+* Avg speed masked poly sample: 1358092.8 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 141272.0 cycles.
+* Avg speed unmasked CCAKEM Dec: 141537.3 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 2
 
-* Avg speed masked CCAKEM Dec: 13765337.2 cycles.
+* Avg speed masked CCAKEM Dec: 13561124.8 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 87.2 cycles.
+
+* Avg speed CBD function: 2932.0 cycles.
+
+* Avg speed high order ciphertext comparison: 2570100.8 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 49342.8 cycles.
+
+* Avg speed masked poly to msg: 72400.8 cycles.
+
+* Avg speed masked poly add: 832.0 cycles.
+
+* Avg speed masked poly sub: 936.8 cycles.
+
+* Avg speed half masked poly sub: 831.2 cycles.
+
+* Avg speed masked poly mul pointwise: 11847.2 cycles.
+
+* Avg speed half masked poly mul pointwise: 11829.6 cycles.
+
+* Avg speed masked poly NTT: 46144.8 cycles.
+
+* Avg speed masked poly inv NTT: 49183.2 cycles.
+
+* Avg speed masked poly sample: 3384951.6 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 135173.5 cycles.
+* Avg speed unmasked CCAKEM Dec: 143376.8 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 3
 
-* Avg speed masked CCAKEM Dec: 25789016.8 cycles.
+* Avg speed masked CCAKEM Dec: 27148798.8 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 169.6 cycles.
+
+* Avg speed CBD function: 6266.0 cycles.
+
+* Avg speed high order ciphertext comparison: 4368260.0 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 99568.8 cycles.
+
+* Avg speed masked poly to msg: 131088.0 cycles.
+
+* Avg speed masked poly add: 1158.4 cycles.
+
+* Avg speed masked poly sub: 1248.0 cycles.
+
+* Avg speed half masked poly sub: 1011.2 cycles.
+
+* Avg speed masked poly mul pointwise: 15790.4 cycles.
+
+* Avg speed half masked poly mul pointwise: 15952.0 cycles.
+
+* Avg speed masked poly NTT: 67350.4 cycles.
+
+* Avg speed masked poly inv NTT: 67761.2 cycles.
+
+* Avg speed masked poly sample: 6631090.0 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 143066.2 cycles.
+* Avg speed unmasked CCAKEM Dec: 135553.5 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 4
 
-* Avg speed masked CCAKEM Dec: 41538728.0 cycles.
+* Avg speed masked CCAKEM Dec: 41231187.2 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 253.2 cycles.
+
+* Avg speed CBD function: 9385.2 cycles.
+
+* Avg speed high order ciphertext comparison: 6654816.0 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 158579.6 cycles.
+
+* Avg speed masked poly to msg: 190456.8 cycles.
+
+* Avg speed masked poly add: 1431.6 cycles.
+
+* Avg speed masked poly sub: 1633.6 cycles.
+
+* Avg speed half masked poly sub: 1265.6 cycles.
+
+* Avg speed masked poly mul pointwise: 19717.6 cycles.
+
+* Avg speed half masked poly mul pointwise: 19699.2 cycles.
+
+* Avg speed masked poly NTT: 80019.2 cycles.
+
+* Avg speed masked poly inv NTT: 84778.0 cycles.
+
+* Avg speed masked poly sample: 10597123.2 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 150406.6 cycles.
+* Avg speed unmasked CCAKEM Dec: 136216.3 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 5
 
-* Avg speed masked CCAKEM Dec: 63373857.2 cycles.
+* Avg speed masked CCAKEM Dec: 62719868.4 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 383.6 cycles.
+
+* Avg speed CBD function: 14812.0 cycles.
+
+* Avg speed high order ciphertext comparison: 10243108.0 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 245477.2 cycles.
+
+* Avg speed masked poly to msg: 273021.6 cycles.
+
+* Avg speed masked poly add: 1477.2 cycles.
+
+* Avg speed masked poly sub: 1870.4 cycles.
+
+* Avg speed half masked poly sub: 1493.2 cycles.
+
+* Avg speed masked poly mul pointwise: 23684.8 cycles.
+
+* Avg speed half masked poly mul pointwise: 23690.0 cycles.
+
+* Avg speed masked poly NTT: 93502.8 cycles.
+
+* Avg speed masked poly inv NTT: 107252.0 cycles.
+
+* Avg speed masked poly sample: 15232345.6 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 159492.0 cycles.
+* Avg speed unmasked CCAKEM Dec: 139926.2 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 6
 
-* Avg speed masked CCAKEM Dec: 86321701.2 cycles.
+* Avg speed masked CCAKEM Dec: 86271814.8 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 482.8 cycles.
+
+* Avg speed CBD function: 18218.4 cycles.
+
+* Avg speed high order ciphertext comparison: 12890898.0 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 314476.4 cycles.
+
+* Avg speed masked poly to msg: 357130.8 cycles.
+
+* Avg speed masked poly add: 1821.2 cycles.
+
+* Avg speed masked poly sub: 1991.6 cycles.
+
+* Avg speed half masked poly sub: 1583.2 cycles.
+
+* Avg speed masked poly mul pointwise: 25537.2 cycles.
+
+* Avg speed half masked poly mul pointwise: 25401.2 cycles.
+
+* Avg speed masked poly NTT: 104986.4 cycles.
+
+* Avg speed masked poly inv NTT: 109672.4 cycles.
+
+* Avg speed masked poly sample: 20834598.4 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 164317.8 cycles.
+* Avg speed unmasked CCAKEM Dec: 138308.3 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 7
 
-* Avg speed masked CCAKEM Dec: 108485970.4 cycles.
+* Avg speed masked CCAKEM Dec: 109141186.0 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 707.2 cycles.
+
+* Avg speed CBD function: 25131.6 cycles.
+
+* Avg speed high order ciphertext comparison: 16963524.4 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 387676.8 cycles.
+
+* Avg speed masked poly to msg: 459555.2 cycles.
+
+* Avg speed masked poly add: 1912.8 cycles.
+
+* Avg speed masked poly sub: 2370.0 cycles.
+
+* Avg speed half masked poly sub: 1861.6 cycles.
+
+* Avg speed masked poly mul pointwise: 29943.2 cycles.
+
+* Avg speed half masked poly mul pointwise: 29924.4 cycles.
+
+* Avg speed masked poly NTT: 112200.4 cycles.
+
+* Avg speed masked poly inv NTT: 119592.8 cycles.
+
+* Avg speed masked poly sample: 26554416.0 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 145723.0 cycles.
+* Avg speed unmasked CCAKEM Dec: 136211.2 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 8
 
-* Avg speed masked CCAKEM Dec: 137280621.6 cycles.
+* Avg speed masked CCAKEM Dec: 137147893.6 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 840.4 cycles.
+
+* Avg speed CBD function: 29493.6 cycles.
+
+* Avg speed high order ciphertext comparison: 21400186.4 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 483992.0 cycles.
+
+* Avg speed masked poly to msg: 591593.2 cycles.
+
+* Avg speed masked poly add: 2447.2 cycles.
+
+* Avg speed masked poly sub: 2470.8 cycles.
+
+* Avg speed half masked poly sub: 2084.0 cycles.
+
+* Avg speed masked poly mul pointwise: 33676.8 cycles.
+
+* Avg speed half masked poly mul pointwise: 33664.4 cycles.
+
+* Avg speed masked poly NTT: 125970.8 cycles.
+
+* Avg speed masked poly inv NTT: 134516.8 cycles.
+
+* Avg speed masked poly sample: 34187844.8 cycles.
 ------------------------------------------------------------------------------
 
-* Benchmarks unmasked CCAKEM Dec: 
+*----------------------- Timing unmasked CCAKEM Dec ------------------------
 
-* Avg speed unmasked CCAKEM Dec: 164860.2 cycles.
+* Avg speed unmasked CCAKEM Dec: 141733.3 cycles.
 
-* Benchmarks masked CCAKEM Dec: 
+*------------------------ Timing masked CCAKEM Dec -------------------------
 
 * MASKING_ORDER = 9
 
-* Avg speed masked CCAKEM Dec: 172739520.0 cycles.
+* Avg speed masked CCAKEM Dec: 174703380.8 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 1134.4 cycles.
+
+* Avg speed CBD function: 42500.8 cycles.
+
+* Avg speed high order ciphertext comparison: 27201133.2 cycles.
+
+* ------------------- Timing masked polynomial operation -------------------
+
+* Avg speed masked poly from msg: 640031.6 cycles.
+
+* Avg speed masked poly to msg: 771204.8 cycles.
+
+* Avg speed masked poly add: 2728.8 cycles.
+
+* Avg speed masked poly sub: 3102.0 cycles.
+
+* Avg speed half masked poly sub: 2208.4 cycles.
+
+* Avg speed masked poly mul pointwise: 37602.4 cycles.
+
+* Avg speed half masked poly mul pointwise: 37250.8 cycles.
+
+* Avg speed masked poly NTT: 144402.4 cycles.
+
+* Avg speed masked poly inv NTT: 156703.6 cycles.
+
+* Avg speed masked poly sample: 44459175.2 cycles.
 ------------------------------------------------------------------------------
