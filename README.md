@@ -3,8 +3,8 @@
 This project implements Masked NewHope KEM, a cryptographic scheme designed for secure key encapsulation mechanisms (KEM). This repository includes the source code and tools to test the performance of the implementation.
 
 ## Features
-- Implementation of Masked NEWHOPE IND-CPA PKE
-- Implementation of Masked NewHope KEM decapsulation
+- Implementation of Masked NewHope IND-CPA PKE
+- Implementation of Masked NewHope IND-CCA KEM decapsulation
 - Performance evaluation tools
 
 ## Getting Started
