@@ -20,5 +20,6 @@ To evaluate the performance of the Masked NewHope implementation at different ma
 ```bash
 python3 run_speedtest.py
 ```
+The results are in bench_res.txt
 
 
