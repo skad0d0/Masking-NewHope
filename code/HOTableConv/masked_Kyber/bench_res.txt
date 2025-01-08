@@ -1,0 +1,180 @@
+Benchmarks at order 1
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 2050720.400000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 25.6 cycles.
+
+* Avg speed CBD function: 608.0 cycles.
+
+* Avg speed high order ciphertext comparison: 272758.0 cycles.
+
+* Avg speed masked polyvec pointwise acc: 20390.8 cycles.
+
+* Avg speed masked poly sample: 168874.0 cycles.
+
+* Avg speed masked polyvec NTT: 44631.6 cycles.
+
+* Avg speed masked polyvec INVNTT: 66390.0 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 2
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 4384265.600000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 106.4 cycles.
+
+* Avg speed CBD function: 1111.2 cycles.
+
+* Avg speed high order ciphertext comparison: 609613.2 cycles.
+
+* Avg speed masked polyvec pointwise acc: 29676.4 cycles.
+
+* Avg speed masked poly sample: 391324.4 cycles.
+
+* Avg speed masked polyvec NTT: 66567.2 cycles.
+
+* Avg speed masked polyvec INVNTT: 89934.4 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 3
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 8716975.600000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 151.2 cycles.
+
+* Avg speed CBD function: 1852.4 cycles.
+
+* Avg speed high order ciphertext comparison: 1100248.4 cycles.
+
+* Avg speed masked polyvec pointwise acc: 53068.4 cycles.
+
+* Avg speed masked poly sample: 820844.4 cycles.
+
+* Avg speed masked polyvec NTT: 88440.0 cycles.
+
+* Avg speed masked polyvec INVNTT: 116359.2 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 4
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 13229173.210000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 246.8 cycles.
+
+* Avg speed CBD function: 2803.6 cycles.
+
+* Avg speed high order ciphertext comparison: 1541522.0 cycles.
+
+* Avg speed masked polyvec pointwise acc: 50861.2 cycles.
+
+* Avg speed masked poly sample: 1235245.6 cycles.
+
+* Avg speed masked polyvec NTT: 109224.4 cycles.
+
+* Avg speed masked polyvec INVNTT: 148328.8 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 5
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 19355571.600000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 1012.0 cycles.
+
+* Avg speed CBD function: 3993.2 cycles.
+
+* Avg speed high order ciphertext comparison: 2261290.0 cycles.
+
+* Avg speed masked polyvec pointwise acc: 61295.6 cycles.
+
+* Avg speed masked poly sample: 1863846.0 cycles.
+
+* Avg speed masked polyvec NTT: 137762.4 cycles.
+
+* Avg speed masked polyvec INVNTT: 183316.0 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 6
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 25851226.400000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 1452.8 cycles.
+
+* Avg speed CBD function: 5334.4 cycles.
+
+* Avg speed high order ciphertext comparison: 2939667.2 cycles.
+
+* Avg speed masked polyvec pointwise acc: 72022.4 cycles.
+
+* Avg speed masked poly sample: 2467096.8 cycles.
+
+* Avg speed masked polyvec NTT: 171076.8 cycles.
+
+* Avg speed masked polyvec INVNTT: 228496.4 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 7
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 35453793.610000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 1934.4 cycles.
+
+* Avg speed CBD function: 8530.0 cycles.
+
+* Avg speed high order ciphertext comparison: 3642472.0 cycles.
+
+* Avg speed masked polyvec pointwise acc: 79120.0 cycles.
+
+* Avg speed masked poly sample: 3505743.6 cycles.
+
+* Avg speed masked polyvec NTT: 174594.8 cycles.
+
+* Avg speed masked polyvec INVNTT: 224106.0 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 8
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 42837153.990000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 2553.6 cycles.
+
+* Avg speed CBD function: 9313.6 cycles.
+
+* Avg speed high order ciphertext comparison: 4771628.4 cycles.
+
+* Avg speed masked polyvec pointwise acc: 90634.4 cycles.
+
+* Avg speed masked poly sample: 4223781.6 cycles.
+
+* Avg speed masked polyvec NTT: 199624.4 cycles.
+
+* Avg speed masked polyvec INVNTT: 289971.2 cycles.
+------------------------------------------------------------------------------
+Benchmarks at order 9
+Benchmarks CCA Dec
+Avg speed INDCCA_DEC: 53267779.600000 cycles.
+
+* ----------------------------- Timing gadgets -----------------------------
+
+* Avg speed theta function: 3488.8 cycles.
+
+* Avg speed CBD function: 11537.6 cycles.
+
+* Avg speed high order ciphertext comparison: 5849716.4 cycles.
+
+* Avg speed masked polyvec pointwise acc: 106009.6 cycles.
+
+* Avg speed masked poly sample: 5558992.0 cycles.
+
+* Avg speed masked polyvec NTT: 226196.4 cycles.
+
+* Avg speed masked polyvec INVNTT: 330050.0 cycles.
+------------------------------------------------------------------------------
